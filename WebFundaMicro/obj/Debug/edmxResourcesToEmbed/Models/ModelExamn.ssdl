@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB_FundaMicroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="LOG_CLIENT">
+    <Key>
+      <PropertyRef Name="ID_LOG_CLIENT" />
+    </Key>
+    <Property Name="ID_LOG_CLIENT" Type="int" Nullable="false" />
+    <Property Name="ID_CLIENT" Type="int" Nullable="false" />
+    <Property Name="THE_USER" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="CRUD_ACTION" Type="varchar" MaxLength="7" Nullable="false" />
+    <Property Name="DATE_ACTION" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="THE_CLIENT">
+    <Key>
+      <PropertyRef Name="ID_CLIENT" />
+    </Key>
+    <Property Name="ID_CLIENT" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="LASTNAME" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="CRUD_ACTION" Type="varchar" MaxLength="7" Nullable="false" />
+    <Property Name="USR_CRUD_ACTION" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DATE_ACTION" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="THE_USERS">
+    <Key>
+      <PropertyRef Name="THE_USER" />
+    </Key>
+    <Property Name="THE_USER" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="THE_PSW" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="NAME" Type="varchar" MaxLength="60" />
+    <Property Name="LASTNAME" Type="varchar" MaxLength="60" />
+  </EntityType>
+  <Association Name="FK_LOG_CLIE_REF_THE_CLIE">
+    <End Role="THE_CLIENT" Type="Self.THE_CLIENT" Multiplicity="1" />
+    <End Role="LOG_CLIENT" Type="Self.LOG_CLIENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="THE_CLIENT">
+        <PropertyRef Name="ID_CLIENT" />
+      </Principal>
+      <Dependent Role="LOG_CLIENT">
+        <PropertyRef Name="ID_CLIENT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LOG_CLIE_REF_THE_USER">
+    <End Role="THE_USERS" Type="Self.THE_USERS" Multiplicity="1" />
+    <End Role="LOG_CLIENT" Type="Self.LOG_CLIENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="THE_USERS">
+        <PropertyRef Name="THE_USER" />
+      </Principal>
+      <Dependent Role="LOG_CLIENT">
+        <PropertyRef Name="THE_USER" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_THE_CLIE_REF_THE_USER">
+    <End Role="THE_USERS" Type="Self.THE_USERS" Multiplicity="1" />
+    <End Role="THE_CLIENT" Type="Self.THE_CLIENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="THE_USERS">
+        <PropertyRef Name="THE_USER" />
+      </Principal>
+      <Dependent Role="THE_CLIENT">
+        <PropertyRef Name="USR_CRUD_ACTION" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DB_FundaMicroModelStoreContainer">
+    <EntitySet Name="LOG_CLIENT" EntityType="Self.LOG_CLIENT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="THE_CLIENT" EntityType="Self.THE_CLIENT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="THE_USERS" EntityType="Self.THE_USERS" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_LOG_CLIE_REF_THE_CLIE" Association="Self.FK_LOG_CLIE_REF_THE_CLIE">
+      <End Role="THE_CLIENT" EntitySet="THE_CLIENT" />
+      <End Role="LOG_CLIENT" EntitySet="LOG_CLIENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LOG_CLIE_REF_THE_USER" Association="Self.FK_LOG_CLIE_REF_THE_USER">
+      <End Role="THE_USERS" EntitySet="THE_USERS" />
+      <End Role="LOG_CLIENT" EntitySet="LOG_CLIENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_THE_CLIE_REF_THE_USER" Association="Self.FK_THE_CLIE_REF_THE_USER">
+      <End Role="THE_USERS" EntitySet="THE_USERS" />
+      <End Role="THE_CLIENT" EntitySet="THE_CLIENT" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

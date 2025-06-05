@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DB_FundaMicroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LOG_CLIENT">
+          <Key>
+            <PropertyRef Name="ID_LOG_CLIENT" />
+          </Key>
+          <Property Name="ID_LOG_CLIENT" Type="int" Nullable="false" />
+          <Property Name="ID_CLIENT" Type="int" Nullable="false" />
+          <Property Name="THE_USER" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CRUD_ACTION" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="DATE_ACTION" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="THE_CLIENT">
+          <Key>
+            <PropertyRef Name="ID_CLIENT" />
+          </Key>
+          <Property Name="ID_CLIENT" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="LASTNAME" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="CRUD_ACTION" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="USR_CRUD_ACTION" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DATE_ACTION" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="THE_USERS">
+          <Key>
+            <PropertyRef Name="THE_USER" />
+          </Key>
+          <Property Name="THE_USER" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="THE_PSW" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="NAME" Type="varchar" MaxLength="60" />
+          <Property Name="LASTNAME" Type="varchar" MaxLength="60" />
+        </EntityType>
+        <Association Name="FK_LOG_CLIE_REF_THE_CLIE">
+          <End Role="THE_CLIENT" Type="Self.THE_CLIENT" Multiplicity="1" />
+          <End Role="LOG_CLIENT" Type="Self.LOG_CLIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THE_CLIENT">
+              <PropertyRef Name="ID_CLIENT" />
+            </Principal>
+            <Dependent Role="LOG_CLIENT">
+              <PropertyRef Name="ID_CLIENT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LOG_CLIE_REF_THE_USER">
+          <End Role="THE_USERS" Type="Self.THE_USERS" Multiplicity="1" />
+          <End Role="LOG_CLIENT" Type="Self.LOG_CLIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THE_USERS">
+              <PropertyRef Name="THE_USER" />
+            </Principal>
+            <Dependent Role="LOG_CLIENT">
+              <PropertyRef Name="THE_USER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_THE_CLIE_REF_THE_USER">
+          <End Role="THE_USERS" Type="Self.THE_USERS" Multiplicity="1" />
+          <End Role="THE_CLIENT" Type="Self.THE_CLIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THE_USERS">
+              <PropertyRef Name="THE_USER" />
+            </Principal>
+            <Dependent Role="THE_CLIENT">
+              <PropertyRef Name="USR_CRUD_ACTION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_FundaMicroModelStoreContainer">
+          <EntitySet Name="LOG_CLIENT" EntityType="Self.LOG_CLIENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="THE_CLIENT" EntityType="Self.THE_CLIENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="THE_USERS" EntityType="Self.THE_USERS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LOG_CLIE_REF_THE_CLIE" Association="Self.FK_LOG_CLIE_REF_THE_CLIE">
+            <End Role="THE_CLIENT" EntitySet="THE_CLIENT" />
+            <End Role="LOG_CLIENT" EntitySet="LOG_CLIENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LOG_CLIE_REF_THE_USER" Association="Self.FK_LOG_CLIE_REF_THE_USER">
+            <End Role="THE_USERS" EntitySet="THE_USERS" />
+            <End Role="LOG_CLIENT" EntitySet="LOG_CLIENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THE_CLIE_REF_THE_USER" Association="Self.FK_THE_CLIE_REF_THE_USER">
+            <End Role="THE_USERS" EntitySet="THE_USERS" />
+            <End Role="THE_CLIENT" EntitySet="THE_CLIENT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_FundaMicroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LOG_CLIENT">
+          <Key>
+            <PropertyRef Name="ID_LOG_CLIENT" />
+          </Key>
+          <Property Name="ID_LOG_CLIENT" Type="Int32" Nullable="false" />
+          <Property Name="ID_CLIENT" Type="Int32" Nullable="false" />
+          <Property Name="THE_USER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CRUD_ACTION" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DATE_ACTION" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="THE_CLIENT" Relationship="Self.FK_LOG_CLIE_REF_THE_CLIE" FromRole="LOG_CLIENT" ToRole="THE_CLIENT" />
+          <NavigationProperty Name="THE_USERS" Relationship="Self.FK_LOG_CLIE_REF_THE_USER" FromRole="LOG_CLIENT" ToRole="THE_USERS" />
+        </EntityType>
+        <EntityType Name="THE_CLIENT">
+          <Key>
+            <PropertyRef Name="ID_CLIENT" />
+          </Key>
+          <Property Name="ID_CLIENT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LASTNAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CRUD_ACTION" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="USR_CRUD_ACTION" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DATE_ACTION" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="LOG_CLIENT" Relationship="Self.FK_LOG_CLIE_REF_THE_CLIE" FromRole="THE_CLIENT" ToRole="LOG_CLIENT" />
+          <NavigationProperty Name="THE_USERS" Relationship="Self.FK_THE_CLIE_REF_THE_USER" FromRole="THE_CLIENT" ToRole="THE_USERS" />
+        </EntityType>
+        <EntityType Name="THE_USERS">
+          <Key>
+            <PropertyRef Name="THE_USER" />
+          </Key>
+          <Property Name="THE_USER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="THE_PSW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="LASTNAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="LOG_CLIENT" Relationship="Self.FK_LOG_CLIE_REF_THE_USER" FromRole="THE_USERS" ToRole="LOG_CLIENT" />
+          <NavigationProperty Name="THE_CLIENT" Relationship="Self.FK_THE_CLIE_REF_THE_USER" FromRole="THE_USERS" ToRole="THE_CLIENT" />
+        </EntityType>
+        <Association Name="FK_LOG_CLIE_REF_THE_CLIE">
+          <End Role="THE_CLIENT" Type="Self.THE_CLIENT" Multiplicity="1" />
+          <End Role="LOG_CLIENT" Type="Self.LOG_CLIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THE_CLIENT">
+              <PropertyRef Name="ID_CLIENT" />
+            </Principal>
+            <Dependent Role="LOG_CLIENT">
+              <PropertyRef Name="ID_CLIENT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LOG_CLIE_REF_THE_USER">
+          <End Role="THE_USERS" Type="Self.THE_USERS" Multiplicity="1" />
+          <End Role="LOG_CLIENT" Type="Self.LOG_CLIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THE_USERS">
+              <PropertyRef Name="THE_USER" />
+            </Principal>
+            <Dependent Role="LOG_CLIENT">
+              <PropertyRef Name="THE_USER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_THE_CLIE_REF_THE_USER">
+          <End Role="THE_USERS" Type="Self.THE_USERS" Multiplicity="1" />
+          <End Role="THE_CLIENT" Type="Self.THE_CLIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THE_USERS">
+              <PropertyRef Name="THE_USER" />
+            </Principal>
+            <Dependent Role="THE_CLIENT">
+              <PropertyRef Name="USR_CRUD_ACTION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_FundaMicroEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LOG_CLIENT" EntityType="Self.LOG_CLIENT" />
+          <EntitySet Name="THE_CLIENT" EntityType="Self.THE_CLIENT" />
+          <EntitySet Name="THE_USERS" EntityType="Self.THE_USERS" />
+          <AssociationSet Name="FK_LOG_CLIE_REF_THE_CLIE" Association="Self.FK_LOG_CLIE_REF_THE_CLIE">
+            <End Role="THE_CLIENT" EntitySet="THE_CLIENT" />
+            <End Role="LOG_CLIENT" EntitySet="LOG_CLIENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LOG_CLIE_REF_THE_USER" Association="Self.FK_LOG_CLIE_REF_THE_USER">
+            <End Role="THE_USERS" EntitySet="THE_USERS" />
+            <End Role="LOG_CLIENT" EntitySet="LOG_CLIENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THE_CLIE_REF_THE_USER" Association="Self.FK_THE_CLIE_REF_THE_USER">
+            <End Role="THE_USERS" EntitySet="THE_USERS" />
+            <End Role="THE_CLIENT" EntitySet="THE_CLIENT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_FundaMicroModelStoreContainer" CdmEntityContainer="DB_FundaMicroEntities1">
+          <EntitySetMapping Name="LOG_CLIENT">
+            <EntityTypeMapping TypeName="DB_FundaMicroModel.LOG_CLIENT">
+              <MappingFragment StoreEntitySet="LOG_CLIENT">
+                <ScalarProperty Name="ID_LOG_CLIENT" ColumnName="ID_LOG_CLIENT" />
+                <ScalarProperty Name="ID_CLIENT" ColumnName="ID_CLIENT" />
+                <ScalarProperty Name="THE_USER" ColumnName="THE_USER" />
+                <ScalarProperty Name="CRUD_ACTION" ColumnName="CRUD_ACTION" />
+                <ScalarProperty Name="DATE_ACTION" ColumnName="DATE_ACTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="THE_CLIENT">
+            <EntityTypeMapping TypeName="DB_FundaMicroModel.THE_CLIENT">
+              <MappingFragment StoreEntitySet="THE_CLIENT">
+                <ScalarProperty Name="ID_CLIENT" ColumnName="ID_CLIENT" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="LASTNAME" ColumnName="LASTNAME" />
+                <ScalarProperty Name="CRUD_ACTION" ColumnName="CRUD_ACTION" />
+                <ScalarProperty Name="USR_CRUD_ACTION" ColumnName="USR_CRUD_ACTION" />
+                <ScalarProperty Name="DATE_ACTION" ColumnName="DATE_ACTION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="THE_USERS">
+            <EntityTypeMapping TypeName="DB_FundaMicroModel.THE_USERS">
+              <MappingFragment StoreEntitySet="THE_USERS">
+                <ScalarProperty Name="THE_USER" ColumnName="THE_USER" />
+                <ScalarProperty Name="THE_PSW" ColumnName="THE_PSW" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="LASTNAME" ColumnName="LASTNAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

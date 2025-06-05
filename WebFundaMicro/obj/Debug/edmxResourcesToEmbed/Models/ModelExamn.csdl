@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DB_FundaMicroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="LOG_CLIENT">
+    <Key>
+      <PropertyRef Name="ID_LOG_CLIENT" />
+    </Key>
+    <Property Name="ID_LOG_CLIENT" Type="Int32" Nullable="false" />
+    <Property Name="ID_CLIENT" Type="Int32" Nullable="false" />
+    <Property Name="THE_USER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CRUD_ACTION" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATE_ACTION" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="THE_CLIENT" Relationship="Self.FK_LOG_CLIE_REF_THE_CLIE" FromRole="LOG_CLIENT" ToRole="THE_CLIENT" />
+    <NavigationProperty Name="THE_USERS" Relationship="Self.FK_LOG_CLIE_REF_THE_USER" FromRole="LOG_CLIENT" ToRole="THE_USERS" />
+  </EntityType>
+  <EntityType Name="THE_CLIENT">
+    <Key>
+      <PropertyRef Name="ID_CLIENT" />
+    </Key>
+    <Property Name="ID_CLIENT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LASTNAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CRUD_ACTION" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="USR_CRUD_ACTION" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATE_ACTION" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="LOG_CLIENT" Relationship="Self.FK_LOG_CLIE_REF_THE_CLIE" FromRole="THE_CLIENT" ToRole="LOG_CLIENT" />
+    <NavigationProperty Name="THE_USERS" Relationship="Self.FK_THE_CLIE_REF_THE_USER" FromRole="THE_CLIENT" ToRole="THE_USERS" />
+  </EntityType>
+  <EntityType Name="THE_USERS">
+    <Key>
+      <PropertyRef Name="THE_USER" />
+    </Key>
+    <Property Name="THE_USER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="THE_PSW" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+    <Property Name="LASTNAME" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="LOG_CLIENT" Relationship="Self.FK_LOG_CLIE_REF_THE_USER" FromRole="THE_USERS" ToRole="LOG_CLIENT" />
+    <NavigationProperty Name="THE_CLIENT" Relationship="Self.FK_THE_CLIE_REF_THE_USER" FromRole="THE_USERS" ToRole="THE_CLIENT" />
+  </EntityType>
+  <Association Name="FK_LOG_CLIE_REF_THE_CLIE">
+    <End Role="THE_CLIENT" Type="Self.THE_CLIENT" Multiplicity="1" />
+    <End Role="LOG_CLIENT" Type="Self.LOG_CLIENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="THE_CLIENT">
+        <PropertyRef Name="ID_CLIENT" />
+      </Principal>
+      <Dependent Role="LOG_CLIENT">
+        <PropertyRef Name="ID_CLIENT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LOG_CLIE_REF_THE_USER">
+    <End Role="THE_USERS" Type="Self.THE_USERS" Multiplicity="1" />
+    <End Role="LOG_CLIENT" Type="Self.LOG_CLIENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="THE_USERS">
+        <PropertyRef Name="THE_USER" />
+      </Principal>
+      <Dependent Role="LOG_CLIENT">
+        <PropertyRef Name="THE_USER" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_THE_CLIE_REF_THE_USER">
+    <End Role="THE_USERS" Type="Self.THE_USERS" Multiplicity="1" />
+    <End Role="THE_CLIENT" Type="Self.THE_CLIENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="THE_USERS">
+        <PropertyRef Name="THE_USER" />
+      </Principal>
+      <Dependent Role="THE_CLIENT">
+        <PropertyRef Name="USR_CRUD_ACTION" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DB_FundaMicroEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="LOG_CLIENT" EntityType="Self.LOG_CLIENT" />
+    <EntitySet Name="THE_CLIENT" EntityType="Self.THE_CLIENT" />
+    <EntitySet Name="THE_USERS" EntityType="Self.THE_USERS" />
+    <AssociationSet Name="FK_LOG_CLIE_REF_THE_CLIE" Association="Self.FK_LOG_CLIE_REF_THE_CLIE">
+      <End Role="THE_CLIENT" EntitySet="THE_CLIENT" />
+      <End Role="LOG_CLIENT" EntitySet="LOG_CLIENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LOG_CLIE_REF_THE_USER" Association="Self.FK_LOG_CLIE_REF_THE_USER">
+      <End Role="THE_USERS" EntitySet="THE_USERS" />
+      <End Role="LOG_CLIENT" EntitySet="LOG_CLIENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_THE_CLIE_REF_THE_USER" Association="Self.FK_THE_CLIE_REF_THE_USER">
+      <End Role="THE_USERS" EntitySet="THE_USERS" />
+      <End Role="THE_CLIENT" EntitySet="THE_CLIENT" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
