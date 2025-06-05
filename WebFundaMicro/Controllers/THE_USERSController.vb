@@ -18,6 +18,10 @@ Namespace Controllers
         Function Index() As ActionResult
             Return View(db.THE_USERS.ToList())
         End Function
+        ' GET: /Account/Login
+        Function Login() As ActionResult
+            Return View()
+        End Function
 
         <HttpPost()>
         <ValidateAntiForgeryToken()>
@@ -25,7 +29,7 @@ Namespace Controllers
             ' Check against the the_users table using real field names
             Dim user = db.THE_USERS.FirstOrDefault(Function(u) u.THE_USER = username AndAlso u.THE_PSW = password)
 
-            If user IsNot Nothing And False Then
+            If user IsNot Nothing Then
                 Session("LoggedInUser") = user
                 Return RedirectToAction("Index", "Home")
             End If

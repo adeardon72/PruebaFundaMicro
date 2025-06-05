@@ -1,12 +1,13 @@
 ﻿@ModelType IEnumerable(Of WebFundaMicro.THE_USERS)
 @Code
     ViewBag.Title = "Iniciar Sesión"
+
     Layout = "~/Views/Shared/_Layout.vbhtml"
 End Code
 
 <h2>
     @ViewBag.Title
-    ViewData("Title") = "Login"
+    
 </h2>
 <p>
     @Html.ActionLink("Login", "Login")
